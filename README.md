@@ -37,6 +37,7 @@ The architecture consists of the following components:
 - **Amazon S3**: Acts as backend storage for artifacts and metadata.
 - **AWS IAM & Networking**: Ensures secure access and network isolation.
 
+```bash
 +-----------------------------------------------------------+
 |                     Amazon EKS Cluster                    |
 |                                                           |
@@ -72,6 +73,7 @@ The architecture consists of the following components:
 |  | - Metadata        |                                    |
 |  +-------------------+                                    |
 +-----------------------------------------------------------+
+```
 ---
 
 ## Step-by-Step Deployment
