@@ -190,8 +190,6 @@ To optimize storage costs:
 ## Conclusion
 This guide provides a scalable and cost-effective solution for deploying Nexus Repository Manager on Amazon EKS with S3 backend storage. Follow the steps to ensure a robust and efficient artifact management system.
 
-```
-
 ---
 
 Dưới đây là bộ **Terraform code hoàn chỉnh** để triển khai mô hình **Nexus Repository Manager** trên **Amazon EKS** sử dụng **Amazon S3** làm backend storage. 
@@ -199,7 +197,7 @@ Dưới đây là bộ **Terraform code hoàn chỉnh** để triển khai mô h
 ---
 
 ### **Cấu Trúc Thư Mục**
-```
+```bash
 nexus-eks-s3/
 ├── main.tf
 ├── variables.tf
