@@ -11,6 +11,7 @@ This guide provides step-by-step instructions to deploy **Nexus Repository Manag
 4. [Cost Optimization](#cost-optimization)
 5. [Monitoring and Backup](#monitoring-and-backup)
 6. [Conclusion](#conclusion)
+7. [Terraform Code Deployment](#terraform-code-deployment)
 
 ---
 
