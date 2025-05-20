@@ -1,8 +1,3 @@
-Dưới đây là hướng dẫn triển khai mô hình kiến trúc **Nexus Repository Manager** trên **Amazon EKS** sử dụng **Amazon S3** làm backend storage.
-
----
-
-```
 # Nexus Repository Manager on Amazon EKS with S3 Backend Storage
 
 This guide provides step-by-step instructions to deploy **Nexus Repository Manager** on **Amazon EKS** using **Amazon S3** as backend storage. The architecture ensures high availability, scalability, and cost efficiency.
@@ -30,9 +25,7 @@ Before starting, ensure the following tools are installed and configured:
 # Install eksctl
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
-```
 
----
 
 ## Architecture Overview
 
