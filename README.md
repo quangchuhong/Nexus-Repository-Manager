@@ -1,5 +1,3 @@
-# Nexus-Repository-Manager
-Nexus Repository Manager on EKS
 
 # Nexus Repository Manager on Amazon EKS with S3 Backend Storage
 
