@@ -193,3 +193,325 @@ This guide provides a scalable and cost-effective solution for deploying Nexus R
 ```
 
 ---
+
+Dưới đây là bộ **Terraform code hoàn chỉnh** để triển khai mô hình **Nexus Repository Manager** trên **Amazon EKS** sử dụng **Amazon S3** làm backend storage. 
+
+---
+
+### **Cấu Trúc Thư Mục**
+```
+nexus-eks-s3/
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── eks/
+│   ├── main.tf
+│   ├── variables.tf
+├── s3/
+│   ├── main.tf
+│   ├── variables.tf
+├── iam/
+│   ├── main.tf
+│   ├── variables.tf
+└── kubernetes/
+    ├── nexus-deployment.yaml
+    ├── nexus-service.yaml
+    ├── nexus-pvc.yaml
+```
+
+---
+
+### **File: main.tf**
+```hcl
+provider "aws" {
+  region = var.aws_region
+}
+
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  token                  = module.eks.cluster_token
+}
+
+module "eks" {
+  source = "./eks"
+}
+
+module "s3" {
+  source = "./s3"
+}
+
+module "iam" {
+  source = "./iam"
+}
+
+resource "kubernetes_namespace" "nexus" {
+  metadata {
+    name = "nexus"
+  }
+}
+
+resource "kubernetes_manifest" "nexus_pvc" {
+  manifest = yamldecode(file("${path.module}/kubernetes/nexus-pvc.yaml"))
+}
+
+resource "kubernetes_manifest" "nexus_deployment" {
+  manifest = yamldecode(file("${path.module}/kubernetes/nexus-deployment.yaml"))
+}
+
+resource "kubernetes_manifest" "nexus_service" {
+  manifest = yamldecode(file("${path.module}/kubernetes/nexus-service.yaml"))
+}
+```
+
+---
+
+### **File: variables.tf**
+```hcl
+variable "aws_region" {
+  default = "us-east-1"
+}
+
+variable "cluster_name" {
+  default = "nexus-cluster"
+}
+
+variable "bucket_name" {
+  default = "nexus-artifacts-bucket"
+}
+```
+
+---
+
+### **File: outputs.tf**
+```hcl
+output "eks_cluster_name" {
+  value = module.eks.cluster_name
+}
+
+output "s3_bucket_name" {
+  value = module.s3.bucket_name
+}
+
+output "eks_node_role_arn" {
+  value = module.iam.eks_node_role_arn
+}
+```
+
+---
+
+### **Thư Mục: eks/**
+
+#### **File: eks/main.tf**
+```hcl
+module "eks" {
+  source          = "terraform-aws-modules/eks/aws"
+  cluster_name    = var.cluster_name
+  cluster_version = "1.27"
+  subnets         = module.vpc.private_subnets
+  vpc_id          = module.vpc.vpc_id
+
+  worker_groups = [
+    {
+      instance_type = "t3.medium"
+      asg_max_size  = 3
+    }
+  ]
+}
+
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+  name   = "nexus-vpc"
+  cidr   = "10.0.0.0/16"
+
+  azs             = ["us-east-1a", "us-east-1b"]
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+
+  enable_nat_gateway = true
+}
+```
+
+#### **File: eks/variables.tf**
+```hcl
+variable "cluster_name" {
+  type = string
+}
+```
+
+---
+
+### **Thư Mục: s3/**
+
+#### **File: s3/main.tf**
+```hcl
+resource "aws_s3_bucket" "nexus_bucket" {
+  bucket = var.bucket_name
+  acl    = "private"
+
+  lifecycle_rule {
+    enabled = true
+
+    transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+
+    transition {
+      days          = 90
+      storage_class = "GLACIER"
+    }
+  }
+}
+
+output "bucket_name" {
+  value = aws_s3_bucket.nexus_bucket.bucket
+}
+```
+
+#### **File: s3/variables.tf**
+```hcl
+variable "bucket_name" {
+  type = string
+}
+```
+
+---
+
+### **Thư Mục: iam/**
+
+#### **File: iam/main.tf**
+```hcl
+resource "aws_iam_role" "eks_node_role" {
+  name = "eks-node-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "eks_node_s3_access" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+output "eks_node_role_arn" {
+  value = aws_iam_role.eks_node_role.arn
+}
+```
+
+#### **File: iam/variables.tf**
+```hcl
+# No variables needed for this module
+```
+
+---
+
+### **Thư Mục: kubernetes/**
+
+#### **File: kubernetes/nexus-deployment.yaml**
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus
+  namespace: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      containers:
+      - name: nexus
+        image: sonatype/nexus3:latest
+        ports:
+        - containerPort: 8081
+        volumeMounts:
+        - name: nexus-storage
+          mountPath: /nexus-data
+      volumes:
+      - name: nexus-storage
+        persistentVolumeClaim:
+          claimName: nexus-pvc
+```
+
+#### **File: kubernetes/nexus-service.yaml**
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexus-service
+  namespace: nexus
+spec:
+  selector:
+    app: nexus
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: LoadBalancer
+```
+
+#### **File: kubernetes/nexus-pvc.yaml**
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus-pvc
+  namespace: nexus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+```
+
+---
+
+### **Cách Sử Dụng**
+
+1. **Khởi Tạo Terraform**:
+   ```bash
+   terraform init
+   ```
+
+2. **Xem Kế Hoạch Triển Khai**:
+   ```bash
+   terraform plan
+   ```
+
+3. **Triển Khai Hệ Thống**:
+   ```bash
+   terraform apply
+   ```
+
+4. **Xóa Hệ Thống** (khi không cần thiết):
+   ```bash
+   terraform destroy
+   ```
+
+---
+
+### **Kết Quả**
+- Một EKS cluster sẽ được tạo và cấu hình để chạy Nexus Repository Manager.
+- Một S3 bucket sẽ được tạo để lưu trữ artifact.
+- Nexus sẽ được triển khai trên EKS và expose qua LoadBalancer.
+
+---
+
+Nếu bạn cần hỗ trợ thêm, hãy cho tôi biết! 😊
