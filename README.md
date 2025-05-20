@@ -192,12 +192,12 @@ This guide provides a scalable and cost-effective solution for deploying Nexus R
 
 ---
 
-Dưới đây là bộ **Terraform code hoàn chỉnh** để triển khai mô hình **Nexus Repository Manager** trên **Amazon EKS** sử dụng **Amazon S3** làm backend storage. 
+Here is the complete **Terraform code** to deploy the **Nexus Repository Manager** on **Amazon EKS** using **Amazon S3** as backend storage. You can copy and use it directly.
 
 ---
 
-### **Cấu Trúc Thư Mục**
-```bash
+### **Folder Structure**
+```
 nexus-eks-s3/
 ├── main.tf
 ├── variables.tf
@@ -298,7 +298,7 @@ output "eks_node_role_arn" {
 
 ---
 
-### **Thư Mục: eks/**
+### **Folder: eks/**
 
 #### **File: eks/main.tf**
 ```hcl
@@ -339,7 +339,7 @@ variable "cluster_name" {
 
 ---
 
-### **Thư Mục: s3/**
+### **Folder: s3/**
 
 #### **File: s3/main.tf**
 ```hcl
@@ -376,7 +376,7 @@ variable "bucket_name" {
 
 ---
 
-### **Thư Mục: iam/**
+### **Folder: iam/**
 
 #### **File: iam/main.tf**
 ```hcl
@@ -414,7 +414,7 @@ output "eks_node_role_arn" {
 
 ---
 
-### **Thư Mục: kubernetes/**
+### **Folder: kubernetes/**
 
 #### **File: kubernetes/nexus-deployment.yaml**
 ```yaml
@@ -481,10 +481,33 @@ spec:
 
 ---
 
-### **Kết Quả**
-- Một EKS cluster sẽ được tạo và cấu hình để chạy Nexus Repository Manager.
-- Một S3 bucket sẽ được tạo để lưu trữ artifact.
-- Nexus sẽ được triển khai trên EKS và expose qua LoadBalancer.
+### **How to Use**
+
+1. **Initialize Terraform**:
+   ```bash
+   terraform init
+   ```
+
+2. **Review the Deployment Plan**:
+   ```bash
+   terraform plan
+   ```
+
+3. **Deploy the System**:
+   ```bash
+   terraform apply
+   ```
+
+4. **Destroy the System** (when no longer needed):
+   ```bash
+   terraform destroy
+   ```
 
 ---
 
+### **Results**
+- An EKS cluster will be created and configured to run Nexus Repository Manager.
+- An S3 bucket will be created to store artifacts.
+- Nexus will be deployed on EKS and exposed via a LoadBalancer.
+
+---
