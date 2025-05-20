@@ -200,14 +200,3 @@ This guide provides a scalable and cost-effective solution for deploying Nexus R
 ```
 
 ---
-
-### Cách Sử Dụng
-1. Sao chép nội dung trên vào file `README.md` trong repository của bạn.
-2. Commit và push lên GitHub:
-   ```bash
-   git add README.md
-   git commit -m "Add Nexus on EKS deployment guide"
-   git push origin main
-   ```
-
-Hy vọng hướng dẫn này hữu ích cho bạn! 😊
