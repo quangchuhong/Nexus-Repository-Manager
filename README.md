@@ -77,14 +77,17 @@ The architecture consists of the following components:
 ---
 
 ## Step-by-Step Deployment
+```
 1. Create EKS Cluster
 eksctl create cluster --name nexus-cluster --region <region> --node-type t3.medium --nodes 3
+```
 
 2. Deploy Nexus Repository Manager
-
+```
 1. Create a namespace for Nexus:
 kubectl create namespace nexus
-
+```
+```
 2. Create a Persistent Volume Claim (PVC):
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -97,3 +100,4 @@ spec:
   resources:
     requests:
       storage: 50Gi
+```
