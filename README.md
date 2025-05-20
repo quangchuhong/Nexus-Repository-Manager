@@ -1,4 +1,4 @@
-Dưới đây là hướng dẫn triển khai mô hình kiến trúc **Nexus Repository Manager** trên **Amazon EKS** sử dụng **Amazon S3** làm backend storage, được viết theo chuẩn **GitHub README.md**:
+Dưới đây là hướng dẫn triển khai mô hình kiến trúc **Nexus Repository Manager** trên **Amazon EKS** sử dụng **Amazon S3** làm backend storage.
 
 ---
 
