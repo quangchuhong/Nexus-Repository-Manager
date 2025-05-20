@@ -77,8 +77,8 @@ The architecture consists of the following components:
 ---
 
 ## Step-by-Step Deployment
-```
 1. Create EKS Cluster
+```
 eksctl create cluster --name nexus-cluster --region <region> --node-type t3.medium --nodes 3
 ```
 
