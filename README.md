@@ -167,17 +167,17 @@ kubectl apply -f nexus-service.yaml
 
 1. Install the S3 Blob Store plugin in Nexus.
 2. Configure S3 Blob Store in the Nexus UI:
-- **Go to Repository > Blob Stores > Create Blob Store.
-- **Select S3 Blob Store and provide S3 bucket details.
+- Go to Repository > Blob Stores > Create Blob Store.
+- Select S3 Blob Store and provide S3 bucket details.
   
 ## 4. Cost Optimization
 To optimize storage costs:
-- **Use S3 Intelligent-Tiering for automatic cost savings.
-- **Transition data to S3 Standard-IA or S3 Glacier using S3 Lifecycle Policies.
-- **Compress data before uploading to S3.
-- **Delete unnecessary data regularly.
+- Use S3 Intelligent-Tiering for automatic cost savings.
+- Transition data to S3 Standard-IA or S3 Glacier using S3 Lifecycle Policies.
+- Compress data before uploading to S3.
+- Delete unnecessary data regularly.
 ---
 ## 5. Monitoring and Backup
-- **Use AWS CloudWatch to monitor EKS and S3 performance.
-- **Set up Prometheus and Grafana for Nexus monitoring.
-- **Use AWS Backup for automated S3 bucket backups.
+- Use AWS CloudWatch to monitor EKS and S3 performance.
+- Set up Prometheus and Grafana for Nexus monitoring.
+- Use AWS Backup for automated S3 bucket backups.
