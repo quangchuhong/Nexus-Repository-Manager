@@ -70,3 +70,25 @@ AWS IAM & Networking: Ensures secure access and network isolation.
 |  | - Metadata        |                                    |
 |  +-------------------+                                    |
 +-----------------------------------------------------------+
+
+Step-by-Step Deployment
+1. Create EKS Cluster
+eksctl create cluster --name nexus-cluster --region <region> --node-type t3.medium --nodes 3
+
+2. Deploy Nexus Repository Manager
+
+1. Create a namespace for Nexus:
+kubectl create namespace nexus
+
+2. Create a Persistent Volume Claim (PVC):
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus-pvc
+  namespace: nexus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
