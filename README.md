@@ -2,7 +2,7 @@ Dưới đây là hướng dẫn triển khai mô hình kiến trúc **Nexus Rep
 
 ---
 
-```markdown
+```
 # Nexus Repository Manager on Amazon EKS with S3 Backend Storage
 
 This guide provides step-by-step instructions to deploy **Nexus Repository Manager** on **Amazon EKS** using **Amazon S3** as backend storage. The architecture ensures high availability, scalability, and cost efficiency.
