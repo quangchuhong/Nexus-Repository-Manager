@@ -483,30 +483,6 @@ spec:
 
 ---
 
-### **Cách Sử Dụng**
-
-1. **Khởi Tạo Terraform**:
-   ```bash
-   terraform init
-   ```
-
-2. **Xem Kế Hoạch Triển Khai**:
-   ```bash
-   terraform plan
-   ```
-
-3. **Triển Khai Hệ Thống**:
-   ```bash
-   terraform apply
-   ```
-
-4. **Xóa Hệ Thống** (khi không cần thiết):
-   ```bash
-   terraform destroy
-   ```
-
----
-
 ### **Kết Quả**
 - Một EKS cluster sẽ được tạo và cấu hình để chạy Nexus Repository Manager.
 - Một S3 bucket sẽ được tạo để lưu trữ artifact.
