@@ -139,8 +139,8 @@ Apply the Deployment:
 ```
 kubectl apply -f nexus-deployment.yaml
 ```
-4. Expose Nexus via a LoadBalancer:
 ```
+4. Expose Nexus via a LoadBalancer:
 apiVersion: v1
 kind: Service
 metadata:
