@@ -101,3 +101,69 @@ spec:
     requests:
       storage: 50Gi
 ```
+```
+Apply the PVC:
+kubectl apply -f nexus-pvc.yaml
+```
+```
+3. Deploy Nexus:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus
+  namespace: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      containers:
+      - name: nexus
+        image: sonatype/nexus3:latest
+        ports:
+        - containerPort: 8081
+        volumeMounts:
+        - name: nexus-storage
+          mountPath: /nexus-data
+      volumes:
+      - name: nexus-storage
+        persistentVolumeClaim:
+          claimName: nexus-pvc
+```
+Apply the Deployment:
+```
+kubectl apply -f nexus-deployment.yaml
+```
+4. Expose Nexus via a LoadBalancer:
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexus-service
+  namespace: nexus
+spec:
+  selector:
+    app: nexus
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: LoadBalancer
+
+```
+Apply the Service:
+```
+kubectl apply -f nexus-service.yaml
+
+```
+## 3. Configure S3 as Backend Storage
+
+1. Install the S3 Blob Store plugin in Nexus.
+2. Configure S3 Blob Store in the Nexus UI:
+- Go to Repository > Blob Stores > Create Blob Store.
+- Select S3 Blob Store and provide S3 bucket details.
