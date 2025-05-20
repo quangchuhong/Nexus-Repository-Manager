@@ -514,4 +514,3 @@ spec:
 
 ---
 
-Nếu bạn cần hỗ trợ thêm, hãy cho tôi biết! 😊
