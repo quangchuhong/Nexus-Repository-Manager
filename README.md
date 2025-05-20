@@ -27,13 +27,14 @@ Before starting, ensure the following tools are installed and configured:
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 
-Architecture Overview
-The architecture consists of the following components:
+---
 
-Amazon EKS Cluster: Hosts Nexus Pods for high availability.
-Persistent Volume (PV): Uses EBS or EFS for local storage of Nexus configuration and logs.
-Amazon S3: Acts as backend storage for artifacts and metadata.
-AWS IAM & Networking: Ensures secure access and network isolation.
+## Architecture Overview
+The architecture consists of the following components:
+- **Amazon EKS Cluster**: Hosts Nexus Pods for high availability.
+- **Persistent Volume (PV)**: Uses EBS or EFS for local storage of Nexus configuration and logs.
+- **Amazon S3**: Acts as backend storage for artifacts and metadata.
+- **AWS IAM & Networking**: Ensures secure access and network isolation.
 
 +-----------------------------------------------------------+
 |                     Amazon EKS Cluster                    |
@@ -70,8 +71,9 @@ AWS IAM & Networking: Ensures secure access and network isolation.
 |  | - Metadata        |                                    |
 |  +-------------------+                                    |
 +-----------------------------------------------------------+
+---
 
-Step-by-Step Deployment
+## Step-by-Step Deployment
 1. Create EKS Cluster
 eksctl create cluster --name nexus-cluster --region <region> --node-type t3.medium --nodes 3
 
