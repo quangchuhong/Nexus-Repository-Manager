@@ -9,9 +9,9 @@ This guide provides step-by-step instructions to deploy **Nexus Repository Manag
 1. [Prerequisites](#prerequisites)
 2. [Architecture Overview](#architecture-overview)
 3. [Step-by-Step Deployment](#step-by-step-deployment)
-4. [Cost Optimization](#cost-optimization)
-5. [Monitoring and Backup](#monitoring-and-backup)
-6. [Conclusion](#conclusion)
+4. [Configure S3 as Backend Storage](#Configure-S3-Backend)
+5. [Cost Optimization](#cost-optimization)
+6. [Monitoring and Backup](#monitoring-and-backup)
 
 ---
 
