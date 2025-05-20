@@ -26,3 +26,47 @@ Before starting, ensure the following tools are installed and configured:
 # Install eksctl
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
+
+Architecture Overview
+The architecture consists of the following components:
+
+Amazon EKS Cluster: Hosts Nexus Pods for high availability.
+Persistent Volume (PV): Uses EBS or EFS for local storage of Nexus configuration and logs.
+Amazon S3: Acts as backend storage for artifacts and metadata.
+AWS IAM & Networking: Ensures secure access and network isolation.
+
++-----------------------------------------------------------+
+|                     Amazon EKS Cluster                    |
+|                                                           |
+|  +-------------------+      +-------------------+         |
+|  | Nexus Pod         |      | Nexus Pod         |         |
+|  | (Deployment)      |      | (Deployment)      |         |
+|  |                   |      |                   |         |
+|  | +---------------+ |      | +---------------+ |         |
+|  | | Nexus         | |      | | Nexus         | |         |
+|  | | Container     | |      | | Container     | |         |
+|  | +---------------+ |      | +---------------+ |         |
+|  |                   |      |                   |         |
+|  | +---------------+ |      | +---------------+ |         |
+|  | | Persistent    | |      | | Persistent    | |         |
+|  | | Volume (PV)   | |      | | Volume (PV)   | |         |
+|  | +---------------+ |      | +---------------+ |         |
+|  +-------------------+      +-------------------+         |
+|                                                           |
+|  +-----------------------------------------------------+  |
+|  | Nexus Service (LoadBalancer)                        |  |
+|  | Exposes Nexus UI and API on port 8081               |  |
+|  +-----------------------------------------------------+  |
++-----------------------------------------------------------+
+
++-----------------------------------------------------------+
+|                     Amazon S3                             |
+|                                                           |
+|  +-------------------+                                    |
+|  | S3 Bucket         |                                    |
+|  | (Blob Storage)    |                                    |
+|  |                   |                                    |
+|  | - Artifacts       |                                    |
+|  | - Metadata        |                                    |
+|  +-------------------+                                    |
++-----------------------------------------------------------+
