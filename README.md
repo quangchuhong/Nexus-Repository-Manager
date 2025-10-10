@@ -29,48 +29,47 @@
 
 ### a. Nexus Pods trên EKS  
 - **Replicas**:  
-  ⭐ 3 instances (triển khai trên 3 AZ khác nhau)  
-  ⭐ Sử dụng `PodAntiAffinity` để đảm bảo HA  
+  - 3 instances (triển khai trên 3 Availability Zone khác nhau)  
+  - Sử dụng `PodAntiAffinity` để đảm bảo High Availability  
 - **Resource Requests**:  
-  ✅ CPU: 4 cores (VD: EC2 `m5.xlarge`)  
-  ✅ RAM: 16GB (Xử lý ~1,000 RPS)  
+  - CPU: 4 cores (Ví dụ: EC2 instance type `m5.xlarge`)  
+  - RAM: 16GB (Xử lý ~1,000 requests/second)  
 - **Storage**:  
-  🗂️ EFS: 50GB (lưu config, logs, cache) - `ReadWriteMany`  
-  🗄️ S3: 10TB+ (artifacts) + Lifecycle Policy (Glacer after 90 days)  
+  - EFS: 50GB (lưu trữ cấu hình, logs, cache) với chế độ `ReadWriteMany`  
+  - S3: 10TB+ (artifacts chính) + Lifecycle Policy (tự động chuyển sang Glacier sau 90 ngày)  
 
 ---
 
 ### b. Database (RDS PostgreSQL)  
 - **Instance Type**:  
-  🚀 `db.m6g.4xlarge` (16 vCPU, 64GB RAM)  
-  🚀 Multi-AZ (Auto-failover < 60s)  
+  - `db.m6g.4xlarge` (16 vCPU, 64GB RAM)  
+  - Multi-AZ deployment (tự động failover trong vòng <60 giây)  
 - **Storage**:  
-  💾 1TB Provisioned Storage  
-  ⚡ IOPS: 10,000 (Độ trễ < 5ms)  
+  - 1TB Provisioned Storage  
+  - IOPS: 10,000 (độ trễ <5ms)  
 
 ---
 
 ### c. Amazon S3  
 - **Storage Class**:  
-  📦 Standard (truy cập thường xuyên)  
-  📦 Intelligent-Tiering (tối ưu cost)  
-- **Tính năng**:  
-  🔒 Versioning + Replication (Cross-Region)  
-  🔐 SSE-KMS Encryption  
+  - Standard (cho dữ liệu truy cập thường xuyên)  
+  - Intelligent-Tiering (tối ưu chi phí tự động)  
+- **Tính năng bảo mật**:  
+  - Versioning + Cross-Region Replication  
+  - Mã hóa dữ liệu bằng SSE-KMS  
 
 ---
 
 ### d. Networking  
-- **VPC Design**:  
-  🌐 Private Subnets (3 AZ) → Nexus Pods + RDS  
-  🌐 Public Subnets → ALB  
+- **Thiết kế VPC**:  
+  - Private Subnets (3 AZ) cho Nexus Pods và RDS  
+  - Public Subnets cho Application Load Balancer (ALB)  
 - **Security Groups**:  
-  🔒 Chỉ mở port 80/443 từ ALB → Nexus  
-  🔒 Restrict RDS access từ EKS Security Group  
+  - Chỉ mở port 80/443 từ ALB tới Nexus  
+  - Giới hạn quyền truy cập RDS từ Security Group của EKS  
 - **Best Practices**:  
-  ✅ VPC Endpoints cho S3 (giảm latency)  
-  ✅ Enable DNS Hostnames & Support trong VPC  
-
+  - Sử dụng VPC Endpoints cho S3 để giảm độ trễ  
+  - Kích hoạt `enableDnsHostnames` và `enableDnsSupport` trong VPC  
 
 
 ## Cost Optimization
