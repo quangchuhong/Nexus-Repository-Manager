@@ -25,103 +25,24 @@
   └── Prometheus/Grafana → Giám sát hiệu năng
 
 ```
-
 ---
 
-## Step-by-Step Deployment
-
-### 1. Create EKS Cluster
-```bash
-eksctl create cluster --name nexus-cluster --region <region> --node-type t3.medium --nodes 3
-```
-
-### 2. Deploy Nexus Repository Manager
-1. Create a namespace for Nexus:
-   ```bash
-   kubectl create namespace nexus
-   ```
-
-2. Create a Persistent Volume Claim (PVC):
-   ```yaml
-   apiVersion: v1
-   kind: PersistentVolumeClaim
-   metadata:
-     name: nexus-pvc
-     namespace: nexus
-   spec:
-     accessModes:
-       - ReadWriteOnce
-     resources:
-       requests:
-         storage: 50Gi
-   ```
-   Apply the PVC:
-   ```bash
-   kubectl apply -f nexus-pvc.yaml
-   ```
-
-3. Deploy Nexus:
-   ```yaml
-   apiVersion: apps/v1
-   kind: Deployment
-   metadata:
-     name: nexus
-     namespace: nexus
-   spec:
-     replicas: 1
-     selector:
-       matchLabels:
-         app: nexus
-     template:
-       metadata:
-         labels:
-           app: nexus
-       spec:
-         containers:
-         - name: nexus
-           image: sonatype/nexus3:latest
-           ports:
-           - containerPort: 8081
-           volumeMounts:
-           - name: nexus-storage
-             mountPath: /nexus-data
-         volumes:
-         - name: nexus-storage
-           persistentVolumeClaim:
-             claimName: nexus-pvc
-   ```
-   Apply the Deployment:
-   ```bash
-   kubectl apply -f nexus-deployment.yaml
-   ```
-
-4. Expose Nexus via a LoadBalancer:
-   ```yaml
-   apiVersion: v1
-   kind: Service
-   metadata:
-     name: nexus-service
-     namespace: nexus
-   spec:
-     selector:
-       app: nexus
-     ports:
-       - protocol: TCP
-         port: 8081
-         targetPort: 8081
-     type: LoadBalancer
-   ```
-   Apply the Service:
-   ```bash
-   kubectl apply -f nexus-service.yaml
-   ```
-
-### 3. Configure S3 as Backend Storage
-1. Install the S3 Blob Store plugin in Nexus.
-2. Configure S3 Blob Store in the Nexus UI:
-   - Go to **Repository > Blob Stores > Create Blob Store**.
-   - Select **S3 Blob Store** and provide S3 bucket details.
-
+### 2. Giải Thích Từng Thành Phần
+a. Nexus Pods trên EKS
+Replicas: 3 instances (trải đều 3 AZ).
+Resource Requests:
+CPU: 4 cores (e.g., m5.xlarge).
+RAM: 16GB → Đảm bảo xử lý ~1,000 RPS (requests/second).
+Storage:
+EFS: 50GB (config, logs, cache) → ReadWriteMany.
+S3: 10TB+ (artifacts) với lifecycle policy (chuyển sang Glacier sau 90 ngày).
+b. Database (RDS PostgreSQL)
+Instance Type: db.m6g.4xlarge (16 vCPU, 64GB RAM).
+Storage: 1TB (Provisioned IOPS: 10,000) → Độ trễ < 5ms.
+Multi-AZ: Auto-failover < 60s.
+c. Amazon S3
+Storage Class: Standard (truy cập thường xuyên) + Intelligent-Tiering.
+Versioning & Replication: Bật để disaster recovery.
 ---
 
 ## Cost Optimization
