@@ -1,5 +1,6 @@
 # Nexus Repository Manager on Amazon EKS with S3 Backend Storage, EFS share data
 
+<small>
 ### HA Architecture Overview
 ```plaintext
 [Users]
@@ -117,6 +118,4 @@
 1. **Giới Hạn Dung Lượng Cache**:  
    ```plaintext
    Administration → Repository → <Repo> → Storage → Blob Store Quota
-
-
-
+</small>
