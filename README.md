@@ -29,7 +29,7 @@
 
 ### 2. Giải Thích Từng Thành Phần
 ```
-a. Nexus Pods trên EKS
+- a. Nexus Pods trên EKS
 Replicas: 3 instances (trải đều 3 AZ).
 Resource Requests:
 CPU: 4 cores (e.g., m5.xlarge).
@@ -37,11 +37,11 @@ RAM: 16GB → Đảm bảo xử lý ~1,000 RPS (requests/second).
 Storage:
 EFS: 50GB (config, logs, cache) → ReadWriteMany.
 S3: 10TB+ (artifacts) với lifecycle policy (chuyển sang Glacier sau 90 ngày).
-b. Database (RDS PostgreSQL)
+- b. Database (RDS PostgreSQL)
 Instance Type: db.m6g.4xlarge (16 vCPU, 64GB RAM).
 Storage: 1TB (Provisioned IOPS: 10,000) → Độ trễ < 5ms.
 Multi-AZ: Auto-failover < 60s.
-c. Amazon S3
+- c. Amazon S3
 Storage Class: Standard (truy cập thường xuyên) + Intelligent-Tiering.
 Versioning & Replication: Bật để disaster recovery.
 ```
