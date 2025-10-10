@@ -76,7 +76,7 @@
   - Bật `enableDnsHostnames` và `enableDnsSupport`.  
 
 
-### 3 Cache trong Nexus
+### 3. Cache trong Nexus
 
 
 | **Loại Cache**             | **Mục Đích**                                      | **Vị Trí Lưu Trữ**                     |
