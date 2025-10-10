@@ -1,6 +1,6 @@
 # Nexus Repository Manager on Amazon EKS with S3 Backend Storage, EFS share data
 
-## HA Architecture Overview
+### HA Architecture Overview
 ```plaintext
 [Users]
   │
@@ -25,9 +25,9 @@
   └── Prometheus/Grafana → Giám sát hiệu năng
 
 ```
-## 2. Giải Thích Từng Thành Phần
+### 2. Giải Thích Từng Thành Phần
 
-### a. Nexus Pods trên EKS  
+#### a. Nexus Pods trên EKS  
 - **Replicas**:  
   - 3 instances triển khai trên 3 Availability Zone (AZ).  
   - Sử dụng `PodAntiAffinity` để đảm bảo High Availability (HA).  
@@ -40,7 +40,7 @@
 
 ---
 
-### b. Database (RDS PostgreSQL)  
+#### b. Database (RDS PostgreSQL)  
 - **Loại instance**:  
   - `db.m6g.4xlarge` (16 vCPU, 64GB RAM).  
   - Multi-AZ deployment (failover <60 giây).  
@@ -50,7 +50,7 @@
 
 ---
 
-### c. Amazon S3  
+#### c. Amazon S3  
 - **Storage Class**:  
   - Standard (truy cập thường xuyên).  
   - Intelligent-Tiering (tối ưu chi phí).  
@@ -60,7 +60,7 @@
 
 ---
 
-### d. Networking  
+#### d. Networking  
 - **Thiết kế VPC**:  
   - Private Subnets (3 AZ) cho Nexus Pods và RDS.  
   - Public Subnets cho ALB.  
@@ -72,7 +72,8 @@
   - Bật `enableDnsHostnames` và `enableDnsSupport`.  
 
 
-## 3 Cache trong Nexus
+### 3 Cache trong Nexus
+<small>
 
 | **Loại Cache**             | **Mục Đích**                                      | **Vị Trí Lưu Trữ**                     |
 |----------------------------|--------------------------------------------------|-----------------------------------------|
@@ -81,6 +82,7 @@
 | **Index Cache**            | Tăng tốc tìm kiẩm artifacts                       | `/nexus-data/index`                     |
 | **Database Cache**         | Tối ưu truy vấn database (nếu dùng embedded DB)   | `/nexus-data/db`                        |
 
+<small> 
 ---
 
 ## 4. Tại Sao Cần Lưu Cache Trên EFS?
