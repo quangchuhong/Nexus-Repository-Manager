@@ -1,6 +1,6 @@
 # Nexus Repository Manager on Amazon EKS with S3 Backend Storage, EFS share data
 
-## Architecture Overview
+## HA Architecture Overview
 ```plaintext
 [Users]
   │
