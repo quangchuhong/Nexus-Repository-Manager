@@ -28,6 +28,7 @@
 ---
 
 ### 2. Giải Thích Từng Thành Phần
+```
 a. Nexus Pods trên EKS
 Replicas: 3 instances (trải đều 3 AZ).
 Resource Requests:
@@ -43,6 +44,7 @@ Multi-AZ: Auto-failover < 60s.
 c. Amazon S3
 Storage Class: Standard (truy cập thường xuyên) + Intelligent-Tiering.
 Versioning & Replication: Bật để disaster recovery.
+```
 ---
 
 ## Cost Optimization
