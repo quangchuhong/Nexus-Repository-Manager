@@ -72,6 +72,49 @@
   - Bật `enableDnsHostnames` và `enableDnsSupport`.  
 
 
+## 3 Cache trong Nexus
+
+| **Loại Cache**             | **Mục Đích**                                      | **Vị Trí Lưu Trữ**                     |
+|----------------------------|--------------------------------------------------|-----------------------------------------|
+| **Metadata Cache**         | Lưu thông tin version, dependencies của artifacts | `/nexus-data/cache`                     |
+| **Proxy Repository Cache** | Lưu artifacts tải từ remote repositories (Maven Central, npmjs) | `/nexus-data/blobs/<repo>/content` |
+| **Index Cache**            | Tăng tốc tìm kiẩm artifacts                       | `/nexus-data/index`                     |
+| **Database Cache**         | Tối ưu truy vấn database (nếu dùng embedded DB)   | `/nexus-data/db`                        |
+
+---
+
+## 4. Tại Sao Cần Lưu Cache Trên EFS?
+
+- **High Availability (HA)**:  
+  - Nhiều Pods truy cập cùng một cache → Đảm bảo consistency khi Pods restart/migrate.  
+  - Tránh rebuild cache từ đầu khi Pod mới khởi động.  
+
+- **Hiệu Suất**:  
+  - Giảm số lần gọi API đến S3 → Tiết kiệm chi phí và giảm độ trễ.  
+  - Parallel read/write từ nhiều Pods.  
+
+- **Độ Bền Dữ Liệu**:  
+  - Backup tự động qua AWS Backup → Phục hồi nhanh khi sự cố.  
+
+---
+
+## 5. Phân Biệt Cache vs Blob Storage (S3)
+
+| **Tiêu Chí**       | **Cache**                                  | **Blob Storage (S3)**                |
+|--------------------|--------------------------------------------|---------------------------------------|
+| **Loại Dữ Liệu**   | Dữ liệu tạm, có thể tái tạo                | Artifacts chính (không thể mất)      |
+| **Vị Trí**        | EFS (shared storage)                       | S3 (durable storage)                 |
+| **Kích Thước**    | Nhỏ (GBs)                                 | Lớn (TBs/PBs)                        |
+| **Quản Lý**       | Tự động xóa khi hết hạn                    | Versioning + Lifecycle Policy        |
+| **Truy Cập**      | Thường xuyên, tốc độ cao                   | Truy cập theo nhu cầu                |
+
+---
+
+## 6. Best Practices Quản Lý Cache
+
+1. **Giới Hạn Dung Lượng Cache**:  
+   ```plaintext
+   Administration → Repository → <Repo> → Storage → Blob Store Quota
 
 
 
