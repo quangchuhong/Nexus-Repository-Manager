@@ -28,7 +28,7 @@
 ### 2. Giải Thích Từng Thành Phần
 
 #### a. Nexus Pods trên EKS
-```
+
 - **Replicas**:  
   - 3 instances triển khai trên 3 Availability Zone (AZ).  
   - Sử dụng `PodAntiAffinity` để đảm bảo High Availability (HA).  
@@ -38,33 +38,33 @@
 - **Lưu trữ**:  
   - **EFS**: 50GB (cấu hình, logs, cache) - Chế độ `ReadWriteMany`.  
   - **S3**: 10TB+ (artifacts chính) + Lifecycle Policy (Glacier sau 90 ngày).  
-```
+
 ---
 
 #### b. Database (RDS PostgreSQL)
-<small>
+
 - **Loại instance**:  
   - `db.m6g.4xlarge` (16 vCPU, 64GB RAM).  
   - Multi-AZ deployment (failover <60 giây).  
 - **Lưu trữ**:  
   - 1TB Provisioned Storage.  
   - IOPS: 10,000 (độ trễ <5ms).  
-  </small>
+  
 ---
 
 #### c. Amazon S3
-<small>
+
 - **Storage Class**:  
   - Standard (truy cập thường xuyên).  
   - Intelligent-Tiering (tối ưu chi phí).  
 - **Tính năng**:  
   - Versioning + Cross-Region Replication.  
   - Mã hóa SSE-KMS.  
-</small>
+
 ---
 
 #### d. Networking  
-<small>
+
 - **Thiết kế VPC**:  
   - Private Subnets (3 AZ) cho Nexus Pods và RDS.  
   - Public Subnets cho ALB.  
@@ -74,10 +74,10 @@
 - **Best Practices**:  
   - VPC Endpoints cho S3.  
   - Bật `enableDnsHostnames` và `enableDnsSupport`.  
-</small>
+
 
 ### 3 Cache trong Nexus
-<small>
+
 
 | **Loại Cache**             | **Mục Đích**                                      | **Vị Trí Lưu Trữ**                     |
 |----------------------------|--------------------------------------------------|-----------------------------------------|
@@ -86,11 +86,11 @@
 | **Index Cache**            | Tăng tốc tìm kiẩm artifacts                       | `/nexus-data/index`                     |
 | **Database Cache**         | Tối ưu truy vấn database (nếu dùng embedded DB)   | `/nexus-data/db`                        |
 
-</small> 
+
 ---
 
 ## 4. Tại Sao Cần Lưu Cache Trên EFS?
-<small>
+
 - **High Availability (HA)**:  
   - Nhiều Pods truy cập cùng một cache → Đảm bảo consistency khi Pods restart/migrate.  
   - Tránh rebuild cache từ đầu khi Pod mới khởi động.  
@@ -101,7 +101,7 @@
 
 - **Độ Bền Dữ Liệu**:  
   - Backup tự động qua AWS Backup → Phục hồi nhanh khi sự cố.  
-</small>
+
 ---
 
 ## 5. Phân Biệt Cache vs Blob Storage (S3)
