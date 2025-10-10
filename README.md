@@ -28,7 +28,7 @@
 ### 2. Giải Thích Từng Thành Phần
 
 #### a. Nexus Pods trên EKS
-<small>
+```
 - **Replicas**:  
   - 3 instances triển khai trên 3 Availability Zone (AZ).  
   - Sử dụng `PodAntiAffinity` để đảm bảo High Availability (HA).  
@@ -38,7 +38,7 @@
 - **Lưu trữ**:  
   - **EFS**: 50GB (cấu hình, logs, cache) - Chế độ `ReadWriteMany`.  
   - **S3**: 10TB+ (artifacts chính) + Lifecycle Policy (Glacier sau 90 ngày).  
-</small>
+```
 ---
 
 #### b. Database (RDS PostgreSQL)
