@@ -1,67 +1,48 @@
-# Nexus Repository Manager & IQ Server Comparison
+# Nexus Repository Manager & IQ Server
 
-A comprehensive comparison of **Sonatype Nexus Repository Pro**, **Nexus Repository OSS**, and **Nexus IQ Server** to help you choose the right tool for your DevOps workflow.
-
----
-
-## 📊 Feature Comparison
-
-| Feature                        | Nexus Repository OSS          | Nexus Repository Pro          | Nexus IQ Server               |
-|--------------------------------|--------------------------------|--------------------------------|--------------------------------|
-| **License**                    | Open Source (Apache 2.0)      | Commercial                    | Commercial                    |
-| **Primary Use Case**           | Artifact Management           | Advanced Artifact Management + Compliance | Security & Compliance Automation |
-| **High Availability (HA)**     | ❌                            | ✅ (Active-Active Clustering) | ✅ (Integrated with Pro)       |
-| **Vulnerability Scanning**     | Basic (Sonatype OSS Index)    | Basic                         | Advanced (CVE, Zero-day, SBOM)|
-| **License Risk Management**    | ❌                            | ✅                            | ✅                            |
-| **CI/CD Integration**          | Limited                       | Jenkins, GitLab, GitHub      | Full Automation (Policy Enforcement) |
-| **Container Security**         | ❌                            | ✅ (Docker Scanning)          | ✅ (Kubernetes + Secrets Detection) |
-| **Audit & Compliance**         | ❌                            | ✅ (Custom Reports)           | ✅ (SOC 2, GDPR, ISO 27001)  |
-| **Support**                    | Community                     | 24/7 SLA                      | 24/7 SLA                      |
+Bản so sánh chi tiết **Nexus Repository Pro**, **Nexus Repository OSS** và **Nexus IQ Server** giúp bạn lựa chọn công cụ phù hợp cho quy trình DevOps.
 
 ---
 
-## 🚀 Use Cases
+## 📊 So sánh tính năng
+
+| Tính năng                     | Nexus Repository OSS          | Nexus Repository Pro          | Nexus IQ Server               |
+|-------------------------------|--------------------------------|--------------------------------|--------------------------------|
+| **Giấy phép**                 | Mã nguồn mở (Apache 2.0)      | Thương mại                    | Thương mại                    |
+| **Mục đích chính**           | Quản lý artifact               | Quản lý artifact nâng cao + Tuân thủ | Tự động hóa bảo mật & tuân thủ |
+| **High Availability (HA)**     | ❌                            | ✅ (Cụm Active-Active)         | ✅ (Tích hợp với Pro)          |
+| **Quét lỗ hổng**             | Cơ bản (Sonatype OSS Index)    | Cơ bản                        | Nâng cao (CVE, Zero-day, SBOM)|
+| **Quản lý rủi ro giấy phép** | ❌                            | ✅                            | ✅                            |
+| **Tích hợp CI/CD**           | Hạn chế                       | Jenkins, GitLab, GitHub       | Tự động hóa (Áp dụng chính sách) |
+| **Bảo mật container**        | ❌                            | ✅ (Quét Docker)               | ✅ (Kubernetes + Phát hiện thông tin nhạy cảm) |
+| **Kiểm toán & Tuân thủ**     | ❌                            | ✅ (Báo cáo tùy chỉnh)         | ✅ (SOC 2, GDPR, ISO 27001)  |
+| **Hỗ trợ**                   | Cộng đồng                     | 24/7 SLA                      | 24/7 SLA                      |
+
+---
+
+## 🚀 Trường hợp sử dụng
 
 ### Nexus Repository OSS
-- **Ideal for**: Small teams, open-source projects, or budget-limited environments.
-- **Features**:
-  - Store and manage artifacts (Docker, npm, Maven, etc.).
-  - Basic vulnerability scanning via OSS Index.
+- **Phù hợp**: Nhóm nhỏ, dự án mã nguồn mở, hoặc môi trường giới hạn ngân sách.
+- **Tính năng**:
+  - Lưu trữ và quản lý artifact (Docker, npm, Maven, v.v.).
+  - Quét lỗ hổng cơ bản qua OSS Index.
 
 ### Nexus Repository Pro
-- **Ideal for**: Enterprises needing scalability, compliance, and HA.
-- **Features**:
-  - Firewall for blocking risky components.
-  - High Availability with active-active clustering.
-  - Advanced Docker image scanning.
+- **Phù hợp**: Doanh nghiệp cần khả năng mở rộng, tuân thủ và HA.
+- **Tính năng**:
+  - Tường lửa chặn thành phần rủi ro.
+  - High Availability với cụm active-active.
+  - Quét image Docker nâng cao.
 
 ### Nexus IQ Server
-- **Ideal for**: DevSecOps teams prioritizing automated security.
-- **Features**:
-  - SBOM generation (SPDX, CycloneDX).
-  - Real-time policy enforcement in CI/CD pipelines.
-  - Container and Kubernetes security scanning.
+- **Phù hợp**: Nhóm DevSecOps ưu tiên bảo mật tự động.
+- **Tính năng**:
+  - Tạo SBOM (SPDX, CycloneDX).
+  - Tự động áp dụng chính sách trong pipeline CI/CD.
+  - Bảo mật container và Kubernetes.
 
 ---
-
-## 🛠️ Getting Started
-
-### Nexus Repository OSS
-```yaml
-# docker-compose.yml
-version: "3"
-services:
-  nexus:
-    image: sonatype/nexus3:latest
-    ports:
-      - "8081:8081"
-    volumes:
-      - nexus-data:/nexus-data
-volumes:
-  nexus-data:
-
-
-
 
 ## Nexus Repository Manager on Amazon EKS with S3 Backend Storage, EFS share data
 
