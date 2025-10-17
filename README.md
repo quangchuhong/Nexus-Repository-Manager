@@ -44,7 +44,7 @@ Bản so sánh chi tiết **Nexus Repository Pro**, **Nexus Repository OSS** và
 
 ---
 
-## Nexus Repository Manager on Amazon EKS with S3 Backend Storage, EFS share data
+## Nexus Repository Manager OSS on Amazon EKS with S3 Backend Storage
 
 ### HA Architecture Overview
 ```plaintext
