@@ -1,4 +1,69 @@
-# Nexus Repository Manager on Amazon EKS with S3 Backend Storage, EFS share data
+# Nexus Repository Manager & IQ Server Comparison
+
+A comprehensive comparison of **Sonatype Nexus Repository Pro**, **Nexus Repository OSS**, and **Nexus IQ Server** to help you choose the right tool for your DevOps workflow.
+
+---
+
+## 📊 Feature Comparison
+
+| Feature                        | Nexus Repository OSS          | Nexus Repository Pro          | Nexus IQ Server               |
+|--------------------------------|--------------------------------|--------------------------------|--------------------------------|
+| **License**                    | Open Source (Apache 2.0)      | Commercial                    | Commercial                    |
+| **Primary Use Case**           | Artifact Management           | Advanced Artifact Management + Compliance | Security & Compliance Automation |
+| **High Availability (HA)**     | ❌                            | ✅ (Active-Active Clustering) | ✅ (Integrated with Pro)       |
+| **Vulnerability Scanning**     | Basic (Sonatype OSS Index)    | Basic                         | Advanced (CVE, Zero-day, SBOM)|
+| **License Risk Management**    | ❌                            | ✅                            | ✅                            |
+| **CI/CD Integration**          | Limited                       | Jenkins, GitLab, GitHub      | Full Automation (Policy Enforcement) |
+| **Container Security**         | ❌                            | ✅ (Docker Scanning)          | ✅ (Kubernetes + Secrets Detection) |
+| **Audit & Compliance**         | ❌                            | ✅ (Custom Reports)           | ✅ (SOC 2, GDPR, ISO 27001)  |
+| **Support**                    | Community                     | 24/7 SLA                      | 24/7 SLA                      |
+
+---
+
+## 🚀 Use Cases
+
+### Nexus Repository OSS
+- **Ideal for**: Small teams, open-source projects, or budget-limited environments.
+- **Features**:
+  - Store and manage artifacts (Docker, npm, Maven, etc.).
+  - Basic vulnerability scanning via OSS Index.
+
+### Nexus Repository Pro
+- **Ideal for**: Enterprises needing scalability, compliance, and HA.
+- **Features**:
+  - Firewall for blocking risky components.
+  - High Availability with active-active clustering.
+  - Advanced Docker image scanning.
+
+### Nexus IQ Server
+- **Ideal for**: DevSecOps teams prioritizing automated security.
+- **Features**:
+  - SBOM generation (SPDX, CycloneDX).
+  - Real-time policy enforcement in CI/CD pipelines.
+  - Container and Kubernetes security scanning.
+
+---
+
+## 🛠️ Getting Started
+
+### Nexus Repository OSS
+```yaml
+# docker-compose.yml
+version: "3"
+services:
+  nexus:
+    image: sonatype/nexus3:latest
+    ports:
+      - "8081:8081"
+    volumes:
+      - nexus-data:/nexus-data
+volumes:
+  nexus-data:
+
+
+
+
+## Nexus Repository Manager on Amazon EKS with S3 Backend Storage, EFS share data
 
 ### HA Architecture Overview
 ```plaintext
